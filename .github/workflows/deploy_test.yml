@@ -1,0 +1,40 @@
+name: TEST DEPLOY
+
+on:
+  push:
+    branches: [ 'test' ]
+  workflow_dispatch:
+
+jobs:
+  deploy-ours:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - uses: convox/action-login@v2
+      name: Convox login
+      with:
+        password: ${{ secrets.CONVOX_DEPLOY_KEY }}
+
+    - uses: convox/action-deploy@v1
+      name: Deploy to Convox
+      with:
+        rack: nahid-dev/v3-rack154
+        app: nodejs
+
+  deploy-new:
+    needs: deploy-ours
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - uses: convox/action-login@v2
+      name: Convox login
+      with:
+        password: ${{ secrets.CONVOX_DEPLOY_KEY }}
+
+    - uses: convox/action-deploy@v1
+      name: Deploy to Convox
+      with:
+        rack: nahid-dev/v3-rack154
+        app: nodejs
