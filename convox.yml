@@ -5,3 +5,4 @@ services:
     domain: ${HOST}
     build: .
     port: 3000
+    
